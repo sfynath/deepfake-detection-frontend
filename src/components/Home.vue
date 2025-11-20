@@ -1,4 +1,6 @@
 <script setup>
+  import Studies from './Studies.vue'
+  
   function getFile(){
     document.getElementById("getFile").click();
   }
@@ -8,7 +10,7 @@
   <div class="home">
     <div class="homeVideo">
       <div class="centerHomeVideo">
-        <video class="theHomeVideo" autoplay muted controls loop>
+        <video class="theHomeVideo" autoplay muted loop>
           <source src="../vid/01_15__outside_talking_still_laughing__02HILKYO.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -25,6 +27,7 @@
       </div>
     </div>
   </div>
+  <Studies></Studies>
 </template>
 
 <style scoped>
