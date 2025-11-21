@@ -89,11 +89,11 @@ h1 {
     align-items: center;
 }
 
-.centerRightSide{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.centerRightSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 </style>

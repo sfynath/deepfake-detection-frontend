@@ -1,29 +1,31 @@
 <template>
-    <div>
+    <div id="allStudies">
         <h1>The Study That Powers Our Detection System</h1>
-        <div>
-            <div>
-                <video class="ELAvideo" autoplay loop muted>
-                    <source src="../vid/ELAwebasset.mp4">
-                </video>
-            </div>
-            <div>
-                <h2>Error Level Analysis</h2>
-                <h3>A Digital Forensics Technique for Revealing Visual Manipulation</h3>
-                <p>Before applying ELA, the uploaded video is first converted into individual frames. This step is important because ELA works at the image level, each frame must be analyzed separately to detect subtle manipulation patterns that appear across the video.</p>
-                <p>Error Level Analysis (ELA) is a digital forensics method used to identify signs of manipulation by examining inconsistencies in JPEG compression. Original images typically have uniform compression, while edited regions produce different error levels that can reveal traces of tampering.</p>
-                <h3>How ELA Works</h3>
-                <ul>
-                    <li>The image or video frame is resaved with a fixed compression quality.</li>
-                    <li>The system calculates pixel-by-pixel differences between the original frame and the recompressed version.</li>
-                    <li>Unaltered areas typically appear darker, indicating consistent compression.</li>
-                    <li>Manipulated areas appear brighter, showing significant compression differences.</li>
-                    <li>The results are visualized as a heatmap, highlighting suspicious regions.</li>
-                </ul>
-                <h3>Why We Use ELA</h3>
-                <p>ELA enhances subtle manipulation cues that are often invisible to the human eye.</p>
-                <p>By processing every video frame through ELA, the system produces clearer patterns of compression inconsistency, making it easier for the deep learning model to recognize signs of deepfake manipulation and achieve more accurate predictions.</p>
-            </div>
+        <div class="positionELA">
+            <div class="studiesVisualAssets">
+                <div class="videoStudiesELA">
+                    <video class="ELAvideo" autoplay loop muted>
+                        <source src="../vid/ELAwebasset.mp4">
+                    </video>
+                </div>
+                <div class="ELARightSide">
+                    <h2 class="subTitle2">Error Level Analysis</h2>
+                    <h3>A Digital Forensics Technique for Revealing Visual Manipulation</h3>
+                    <p>Before applying ELA, the uploaded video is first converted into individual frames. This step is important because ELA works at the image level, each frame must be analyzed separately to detect subtle manipulation patterns that appear across the video.</p>
+                    <p>Error Level Analysis (ELA) is a digital forensics method used to identify signs of manipulation by examining inconsistencies in JPEG compression. Original images typically have uniform compression, while edited regions produce different error levels that can reveal traces of tampering.</p>
+                    <h3>How ELA Works</h3>
+                    <ul>
+                        <li>The image or video frame is resaved with a fixed compression quality.</li>
+                        <li>The system calculates pixel-by-pixel differences between the original frame and the recompressed version.</li>
+                        <li>Unaltered areas typically appear darker, indicating consistent compression.</li>
+                        <li>Manipulated areas appear brighter, showing significant compression differences.</li>
+                        <li>The results are visualized as a heatmap, highlighting suspicious regions.</li>
+                    </ul>
+                    <h3>Why We Use ELA</h3>
+                    <p>ELA enhances subtle manipulation cues that are often invisible to the human eye.</p>
+                    <p>By processing every video frame through ELA, the system produces clearer patterns of compression inconsistency, making it easier for the deep learning model to recognize signs of deepfake manipulation and achieve more accurate predictions.</p>
+                </div>
+        </div>
             <div>
                 <img src="" alt="">
             </div>
@@ -46,7 +48,55 @@
 </template>
 
 <style scoped>
-h1 {
-    
+#allStudies {
+    padding: 20rem 5rem 0 5rem;
+    width: 100%;
 }
+
+h1 {
+    font-weight: bold;
+    font-size: 45px;
+    /*position: absolute;*/
+    /* top: -10px; */
+    color: #ffffff;
+    text-align: center;
+}
+
+.studiesVisualAssets {
+}
+
+.positionELA {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.ELAvideo {
+    width: 40vw;
+    border-radius: 20px;
+}
+
+.videoStudiesELA {
+  width: 50vw;
+  display: inline-block;
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 35px;
+    color: #ffffff;    
+}
+
+.ELARightSide {
+    width: 50vw;
+    display: inline-block;
+    align-items: center;
+}
+
+p, li, h3 {
+    color: #ffffff;
+
+}
+
 </style>
