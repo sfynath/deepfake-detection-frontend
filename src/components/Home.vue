@@ -1,5 +1,6 @@
 <script setup>
   import Studies from './Studies.vue'
+  import Feedback from './Feedback.vue';
   
   function getFile(){
     document.getElementById("getFile").click();
@@ -28,6 +29,7 @@
     </div>
   </div>
   <Studies></Studies>
+  <Feedback></Feedback>
 </template>
 
 <style scoped>
