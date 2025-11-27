@@ -20,11 +20,17 @@
     <div id="homeRightSide">
       <div class="centerRightSide">
         <h1>Deepfake Video Detector Tool</h1>
-  
-        <div class="inputFileButton">
-          <button class="theFileButton" @click="getFile()">Upload your video here!</button>
-          <input type="file" accept="video/*" id="getFile" style="display: none;">
-        </div>
+
+        <label id="drop-zone">
+          Drop the video here, or click to upload.
+          <div class="inputFileButton">
+            <button class="theFileButton" @click="getFile()">Upload your video here!</button>
+            <input type="file" accept="video/*" id="getFile" style="display: none;">
+          </div>
+          <ul id="preview"></ul>
+          <!-- <button id="clear-btn">Clear</button> -->
+        </label>
+        
       </div>
     </div>
   </div>
@@ -68,6 +74,7 @@ h1 {
   cursor: pointer;
   margin-top: 1rem;
   font-size: 16px;
+  border: none;
 }
 
 .theFileButton:hover {
@@ -78,6 +85,10 @@ h1 {
 .homeVideo {
   width: 50vw;
   display: inline-block;
+}
+
+.inputFileButton {
+  line-height: normal;
 }
 
 .theHomeVideo {
@@ -96,6 +107,22 @@ h1 {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+#drop-zone {
+  width: 400px;
+  height: 100%;
+  margin: 20px auto;
+  text-align: center;
+  line-height: 100px;
+  border: 2px dashed #ccc;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; 
+}
+
+#preview {
+  text-align: center;
 }
 
 </style>

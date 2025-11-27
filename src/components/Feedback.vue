@@ -4,14 +4,14 @@
             <h1>Have feedback?</h1>
             <h2>Let us know!</h2>
     
-            <form action="">
+            <form action="" id="formFeedback">
                 <input type="text" placeholder="Your name" id="name">
                 <textarea name="" id="feedback" placeholder="Your feedback"></textarea>
-                <button type="submit"></button>
+                <button type="submit">Submit!</button>
             </form>
         </div>
         <div class="connectSection">
-            <h1>Connect With Us</h1>
+            <h2>Connect With Us</h2>
             <div>
                 <p>For questions, support, or further information, please contact us through the details below.</p>
                 <a href="">dummy@dummy.co.id</a>
@@ -24,12 +24,16 @@
 .allFeedback {
     background-color: #ffffff;
     width: 100%;
-    padding: 3rem 5rem 5rem 5rem;
+    padding: 5rem 5rem 10rem 5rem;
     margin-top: 20rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     /* margin-top: 2rem; */
+}
+
+.feedbackSection {
+    width: 45%;
 }
 
 h1 {
@@ -45,5 +49,80 @@ h2 {
     color: #000000;    
 }
 
+#formFeedback {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Jarak antar elemen form */
+    margin-top: 1rem; /* Menambahkan sedikit jarak antara judul dan form */
+}
+
+#formFeedback textarea {
+    max-height: 100%;
+    max-width: 80%;
+    min-width: 80%;
+}
+
+#formFeedback input, #formFeedback textarea {
+    width: 80%; /* Membuat input dan textarea memenuhi lebar kontainer */
+    padding: 1rem; /* Memberi padding agar lebih besar dan mudah diisi */
+    border-radius: 20px;
+    border: 1px solid #ddd; /* Menambahkan border untuk elemen form */
+    font-size: 1rem;
+    font-family: Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+}
+
+
+#formFeedback button {
+    padding: 1rem 2rem;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    width: 80%;
+    font-weight: 600;
+    background-color: #6b75ff;
+    transition: 0.7s;
+}
+
+#formFeedback button:hover {
+    background-color: #3a44c9;
+    color: rgb(255, 255, 255);
+}
+
+.connectSection {
+    width: 48%;
+     /* Menyediakan ruang untuk bagian Connect */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.connectSection p {
+    margin-left: 0.2rem;
+    color: #000000;
+    /* margin-top: 1rem; */
+    width: 70%;
+}
+
+.connectSection a {
+    margin-left: 0.2rem;
+    color: #0000EE; /* Warna link */
+    text-decoration: none;
+}
 
 </style>
