@@ -1,10 +1,38 @@
 <script setup>
-  import Studies from './Studies.vue'
+  import Studies from './Studies.vue';
   import Feedback from './Feedback.vue';
-  
+  import DropFile from './DropFile.vue';
+  import { ref } from 'vue';
+
+  const isDragging = ref(false)
+  const files = ref([])
+
+  function dragover(e) {
+    e.preventDefault()
+    isDragging.value = true
+  }
+
+  function dragleave(e) {
+    e.preventDefault()
+    isDragging.value = false
+  }
+
+  function drop(e) {
+    e.preventDefault()
+    isDragging.value = false
+
+    const dropped = Array.from(e.dataTransfer.files)
+    files.value = dropped
+  }
+
+  function onchange(e) {
+    files.value = Array.from(e.target.files)
+  }
+
   function getFile(){
     document.getElementById("getFile").click();
   }
+
 </script>
 
 <template>
@@ -21,15 +49,19 @@
       <div class="centerRightSide">
         <h1>Deepfake Video Detector Tool</h1>
 
-        <label id="drop-zone">
-          Drop the video here, or click to upload.
+        <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
           <div class="inputFileButton">
-            <button class="theFileButton" @click="getFile()">Upload your video here!</button>
-            <input type="file" accept="video/*" id="getFile" style="display: none;">
+            <button class="theFileButton" @click="getFile()" @change="onchange">Upload your video here!</button>
+            <input type="file" accept="video/*" id="getFile" ref="file" style="display: none;">
           </div>
-          <ul id="preview"></ul>
+          
+          <label for="drop-zone" class="file-label">
+            <div v-if="isDragging">Release to drop files here.</div>
+            <div v-else>or drop files here to upload.</div>
+          </label>
+          <!-- <ul id="preview"></ul> -->
           <!-- <button id="clear-btn">Clear</button> -->
-        </label>
+        </div>
         
       </div>
     </div>
@@ -65,7 +97,7 @@ h1 {
 
 .theFileButton {
   color: rgb(0, 0, 0);
-  padding: 15px;
+  padding: 18px;
   top: 10px;
   font-weight: 500;
   border-radius: 50px;
@@ -110,12 +142,12 @@ h1 {
 }
 
 #drop-zone {
-  width: 400px;
+  width: 100%;
   height: 100%;
   margin: 20px auto;
   text-align: center;
-  line-height: 100px;
-  border: 2px dashed #ccc;
+  line-height: 50px;
+  border: none;
   cursor: pointer;
   display: flex;
   flex-direction: column; 
