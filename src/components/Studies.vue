@@ -1,6 +1,6 @@
 <template>
     <div id="allStudies">
-        <h1>The Study That Powers Our Detection System</h1>
+        <h1 id="About">The Study That Powers Our Detection System</h1>
         <div class="ELAsection">
             <div class="videoStudiesELA">
                 <video class="ELAvideo" autoplay loop muted>
@@ -61,7 +61,7 @@
 
 <style scoped>
 #allStudies {
-    padding: 20rem 5rem 0 5rem;
+    padding: 7rem 5rem 0 5rem;
     width: 100%;
 }
 

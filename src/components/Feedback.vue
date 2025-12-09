@@ -1,7 +1,7 @@
 <template>
     <div class="allFeedback">
         <div class="feedbackSection">
-            <h1>Have feedback?</h1>
+            <h1 id="Contact">Have feedback?</h1>
             <h2>Let us know!</h2>
     
             <form action="" id="formFeedback">

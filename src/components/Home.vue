@@ -1,7 +1,6 @@
 <script setup>
   import Studies from './Studies.vue';
   import Feedback from './Feedback.vue';
-  import DropFile from './DropFile.vue';
   import { ref } from 'vue';
 
   const isDragging = ref(false)
@@ -36,7 +35,7 @@
 </script>
 
 <template>
-  <div class="home">
+  <div class="home" id="home">
     <div class="homeVideo">
       <div class="centerHomeVideo">
         <video class="theHomeVideo" autoplay muted loop>
@@ -76,13 +75,13 @@ h1 {
   font-size: 45px;
   /*position: absolute;*/
   /* top: -10px; */
-  color: #ffffff;
+  color: #EFDAFF;
   text-align: center;
 }
 
 .home {
   /* padding-top: 10rem; */
-  padding: 14rem 5rem 0 5rem;
+  padding: 14rem 5rem 13rem 5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -101,7 +100,7 @@ h1 {
   top: 10px;
   font-weight: 500;
   border-radius: 50px;
-  background-color: #6b75ff;
+  background-color: #933ace;
   transition: 0.7s;
   cursor: pointer;
   margin-top: 1rem;
@@ -110,7 +109,8 @@ h1 {
 }
 
 .theFileButton:hover {
-  background-color: #3a44c9;
+  background-color: #9714bf;
+  box-shadow: 0em 0em 3em rgba(233, 114, 251, 0.84);
   color: rgb(255, 255, 255);
 }
 
