@@ -10,13 +10,15 @@
                 <div>
                     <GoogleSignIn/>
                     <form id="loginForm">
-                        <div>
-                            <label for="Username">Username: </label>
-                            <input type="text">
+                        <div class="credential">
+                            <label for="Username">Username</label>
+                            <br>
+                            <input type="text" class="credentialInput" placeholder="Username">
                         </div>
-                        <div>
-                            <label for="Password">Password: </label>
-                            <input type="password">
+                        <div class="credential">
+                            <label for="Password">Password</label>
+                            <br>
+                            <input type="password" class="credentialInput" placeholder="Password">
                         </div>
                         <button type="submit">Submit</button>
                     </form>
@@ -59,6 +61,22 @@ h1{
     /* top: -10px; */
     color: #EFDAFF;
     text-align: center;
+}
+
+.credential {
+    margin-bottom: 1rem;
+}
+
+.credential label{
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.credentialInput {
+    width: 100%;
+    border-radius: 50px;
+    padding: 0.75rem;
 }
 
 </style>
