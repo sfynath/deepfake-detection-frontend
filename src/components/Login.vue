@@ -1,9 +1,14 @@
+<script setup>
+    import GoogleSignIn from './GoogleSignin.vue';
+</script>
+
 <template>
     <div id="allLogin">
         <div class="login">
             <h1>Login Page</h1>
             <div>
                 <div>
+                    <GoogleSignIn/>
                     <form id="loginForm">
                         <div>
                             <label for="Username">Username: </label>

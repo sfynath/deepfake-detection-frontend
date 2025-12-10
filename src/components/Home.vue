@@ -112,7 +112,7 @@ h1 {
 
 .theFileButton:hover {
   background-color: #9714bf;
-  box-shadow: 0em 0em 3em rgba(233, 114, 251, 0.84);
+  box-shadow: 0em 0em 2em rgba(233, 114, 251, 0.665);
   color: rgb(255, 255, 255);
 }
 
