@@ -57,18 +57,18 @@
 
 .navigationPosition {
     max-width: 100%;
-    background-color: #D9D9D9;
+    background-color: #202020;
     padding: 0.8rem 3.5rem 0.8rem 3.5rem;
     border-radius: 60px;
     display: flex;
     justify-content: center;
     gap: 38px;
-    box-shadow: 0em 0em 6em rgb(226, 153, 255);
+    box-shadow: 0em 0em 4em rgba(226, 153, 255, 0.822);
 }
 
 .navLink {
     text-decoration: none;
-    color: #000000;
+    color: #EFDAFF;
     font-weight: 600;
     gap: 10px;
     font-size: 15px;

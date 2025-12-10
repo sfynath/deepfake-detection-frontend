@@ -35,38 +35,40 @@
 </script>
 
 <template>
-  <div class="home" id="home">
-    <div class="homeVideo">
-      <div class="centerHomeVideo">
-        <video class="theHomeVideo" autoplay muted loop>
-          <source src="../vid/01_15__outside_talking_still_laughing__02HILKYO.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+  <div>
+    <div class="home" id="home">
+      <div class="homeVideo">
+        <div class="centerHomeVideo">
+          <video class="theHomeVideo" autoplay muted loop>
+            <source src="../vid/01_15__outside_talking_still_laughing__02HILKYO.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
-    </div>
-    <div id="homeRightSide">
-      <div class="centerRightSide">
-        <h1>Deepfake Video Detector Tool</h1>
-
-        <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
-          <div class="inputFileButton">
-            <button class="theFileButton" @click="getFile()" @change="onchange">Upload your video here!</button>
-            <input type="file" accept="video/*" id="getFile" ref="file" style="display: none;">
+      <div id="homeRightSide">
+        <div class="centerRightSide">
+          <h1>Deepfake Video Detector Tool</h1>
+  
+          <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
+            <div class="inputFileButton">
+              <button class="theFileButton" @click="getFile()" @change="onchange">Upload your video here!</button>
+              <input type="file" accept="video/*" id="getFile" ref="file" style="display: none;">
+            </div>
+            
+            <label for="drop-zone" class="file-label">
+              <div v-if="isDragging">Release to drop files here.</div>
+              <div v-else>or drop files here to upload.</div>
+            </label>
+            <!-- <ul id="preview"></ul> -->
+            <!-- <button id="clear-btn">Clear</button> -->
           </div>
           
-          <label for="drop-zone" class="file-label">
-            <div v-if="isDragging">Release to drop files here.</div>
-            <div v-else>or drop files here to upload.</div>
-          </label>
-          <!-- <ul id="preview"></ul> -->
-          <!-- <button id="clear-btn">Clear</button> -->
         </div>
-        
       </div>
     </div>
+    <Studies></Studies>
+    <Feedback></Feedback>
   </div>
-  <Studies></Studies>
-  <Feedback></Feedback>
 </template>
 
 <style scoped>
