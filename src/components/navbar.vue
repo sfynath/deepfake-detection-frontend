@@ -19,9 +19,9 @@
                     <a class="navLink" v-else href="#Contact">Contact Us</a>    
                 </div>
             </nav>
-            <div class="signin">
+            <div>
                 <nav>
-                    <RouterLink to="/Login" class="navLink" style="color: #ffffff;">Login</RouterLink>
+                    <RouterLink to="/Login" class="navLink signin" style="color: #ffffff;">Login</RouterLink>
                 </nav>
             </div>
         </div>
@@ -84,11 +84,31 @@
 } */
 
 .signin {
-    width: 2vw;
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     right: 3rem;
-    top: 2em;
+    top: 1.5rem;
+    padding: 0.5rem;
     color: #ffffff;
+    background-color: #202020;
+    border-radius: 40px;
+    padding: 0.8rem 3.5rem 0.8rem 3.5rem;
+    border: 1px solid #933ace;
+    border-top: #933ace;
+    border-left: #933ace;
+    transition: border-color 1s ease;
+}
+
+.signin:hover {
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+  border: 1px solid #933ace;
+  border-bottom: #933ace;
+  border-right: #933ace;
+  transition: border 1s ease;
 }
 
 </style>

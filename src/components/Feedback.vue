@@ -1,13 +1,29 @@
+<script setup>
+    import Toast from 'primevue/toast';
+    import { useToast } from 'primevue/usetoast';
+
+    const toast = useToast();
+
+    const show = () => {
+        toast.add({severity: 'success', summary: 'Success!', detail: 'Thank you! Your feedback has been submitted successfully.', life: 3000})
+    };
+
+    function sendFeedback() {
+        
+    }
+</script>
+
 <template>
     <div class="allFeedback">
         <div class="feedbackSection">
             <h1 id="Contact">Have feedback?</h1>
             <h2>Let us know!</h2>
     
-            <form action="" id="formFeedback">
-                <input type="text" placeholder="Your name" id="name">
-                <textarea name="" id="feedback" placeholder="Your feedback"></textarea>
-                <button type="submit">Submit!</button>
+            <form @submit.prevent="sendFeedback" id="formFeedback">
+                <input type="text" placeholder="Your name" id="name" style="background-color: #ffffff;">
+                <textarea name="" id="feedback" placeholder="Your feedback" style="background-color: #ffffff;"></textarea>
+                <Toast />
+                <button type="submit" @click="show()">Submit!</button>
             </form>
         </div>
         <div class="connectSection">

@@ -1,5 +1,5 @@
 <script setup>
-    import GoogleSignIn from './GoogleSignin.vue';
+    import GoogleSignIn from './GoogleSignIn.vue';
 </script>
 
 <template>
