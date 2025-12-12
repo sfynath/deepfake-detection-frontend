@@ -19,7 +19,7 @@
                     <a class="navLink" v-else href="#Contact">Contact Us</a>    
                 </div>
             </nav>
-            <div>
+            <div class="border rainbow">
                 <nav>
                     <RouterLink to="/Login" class="navLink signin" style="color: #ffffff;">Login</RouterLink>
                 </nav>
@@ -83,7 +83,7 @@
     justify-content: center;
 } */
 
-.signin {
+/* .signin {
     width: 5%;
     display: flex;
     justify-content: center;
@@ -99,16 +99,114 @@
     border: 1px solid #933ace;
     border-top: #933ace;
     border-left: #933ace;
-    transition: border-color 1s ease;
-}
+    transition: border 1s ease;
+} */
 
-.signin:hover {
+/* .signin:hover {
   background-color: #000000;
   color: rgb(255, 255, 255);
   border: 1px solid #933ace;
   border-bottom: #933ace;
   border-right: #933ace;
   transition: border 1s ease;
+  /* animation: Rotate 2s infinite linear;
+} */
+
+.signin {
+
 }
+
+/* @keyframes Rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+} */
+
+:root {
+  --angle: 45deg;
+  --opacity: 0.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.rainbow {
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 3rem;
+    top: 1.5rem;
+    color: #ffffff;
+    background-color: #202020;
+    border-radius: 40px;
+    padding: 0.6rem 2.8rem 0.6rem 2.8rem;
+    border: 1px solid #933ace;
+    border-top: #933ace;
+    border-left: #933ace;
+    transition: border 1s ease;
+
+    --border-size: 0.1rem;
+    border: var(--border-size) dotted transparent;
+    background-image: linear-gradient(
+        to right,
+        #202020,
+        #202020                                                       
+    ),
+    conic-gradient(
+        from var(--angle),
+        transparent 0deg 54deg,
+        #933ace 70deg 180deg,
+        #933ace 180deg 216deg,
+        transparent 235deg 360deg
+    );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+@property --opacity {
+  syntax: "<number>";
+  initial-value: 0.5;
+  inherits: false;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* .rainbow:hover {
+  animation: rotate 2s linear infinite;
+   background-image: linear-gradient(
+        to right,
+        #3e3e3e,
+        #3e3e3e 
+   ),
+    conic-gradient(
+        from var(--angle),
+        transparent 0deg 54deg,
+        #933ace 70deg 180deg,
+        #933ace 180deg 216deg,
+        transparent 235deg 360deg
+    );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    transition: background-image 1s;
+} */
 
 </style>
