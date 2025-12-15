@@ -19,9 +19,10 @@
                     <a class="navLink" v-else href="#Contact">Contact Us</a>    
                 </div>
             </nav>
-            <div class="border rainbow">
+            <div class="border
+            ">
                 <nav>
-                    <RouterLink to="/Login" class="navLink signin" style="color: #ffffff;">Login</RouterLink>
+                    <RouterLink to="/Login" class="navLink rainbow" style="color: #ffffff;">Login</RouterLink>
                 </nav>
             </div>
         </div>
@@ -112,10 +113,6 @@
   /* animation: Rotate 2s infinite linear;
 } */
 
-.signin {
-
-}
-
 /* @keyframes Rotate {
     from {
         transform: rotate(0deg);
@@ -189,12 +186,12 @@
   }
 }
 
-/* .rainbow:hover {
+.rainbow:hover {
   animation: rotate 2s linear infinite;
    background-image: linear-gradient(
         to right,
-        #3e3e3e,
-        #3e3e3e 
+        #000000,
+        #000000 
    ),
     conic-gradient(
         from var(--angle),
@@ -207,6 +204,6 @@
     background-clip: padding-box, border-box;
 
     transition: background-image 1s;
-} */
+}
 
 </style>

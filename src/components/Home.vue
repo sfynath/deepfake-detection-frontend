@@ -104,7 +104,7 @@ h1 {
   border-radius: 50px;
   background-color: #933ace;
   transition: 0.7s;
-  cursor: pointer;
+  /* cursor: pointer; */
   margin-top: 1rem;
   font-size: 16px;
   border: none;
