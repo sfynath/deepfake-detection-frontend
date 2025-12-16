@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 import Home from '../src/components/Home.vue'
 import Navbar from '../src/components/navbar.vue'
 import Login from '../src/components/Login.vue'
@@ -12,19 +12,19 @@ const routes = [
         component: Home
     },
     {
-        path: '/login',
+        path: '/login/',
         name: 'Login',
         component: Login
     },
     {
-        path: '/upload',
+        path: '/upload/',
         name: 'Upload',
         component: Upload
     }
 ]
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 
     scrollBehavior(to, from, savedPosition) {

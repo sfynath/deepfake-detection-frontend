@@ -4,6 +4,8 @@
   import { ref } from 'vue';
 
   const isDragging = ref(false)
+  const fileInput = ref(null);
+
   const files = ref([])
 
   function dragover(e) {
@@ -32,6 +34,15 @@
     document.getElementById("getFile").click();
   }
 
+  const handleFileSelect = () => {
+    // Access selected files from the input's files property
+    const input = fileInput.value.files;
+    if (input.length > 0) {
+      files.value = input[0]; // Store the first selected file
+      console.log('Selected file:', files.value);
+    }
+  };
+
 </script>
 
 <template>
@@ -52,7 +63,7 @@
           <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
             <div class="inputFileButton">
               <button class="theFileButton" @click="getFile()" @change="onchange">Upload your video here!</button>
-              <input type="file" accept="video/*" id="getFile" ref="file" style="display: none;">
+              <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;" @change="handleFileSelect">
             </div>
             
             <label for="drop-zone" class="file-label">
@@ -104,7 +115,7 @@ h1 {
   border-radius: 50px;
   background-color: #933ace;
   transition: 0.7s;
-  /* cursor: pointer; */
+  cursor: pointer;
   margin-top: 1rem;
   font-size: 16px;
   border: none;
@@ -123,6 +134,7 @@ h1 {
 
 .inputFileButton {
   line-height: normal;
+  cursor: auto;
 }
 
 .theHomeVideo {
