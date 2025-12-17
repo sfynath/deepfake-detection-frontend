@@ -27,6 +27,7 @@ function drop(e) {
     if (validateFiles(dropped)) {
         file.value = dropped[0]
     }
+    previewVideo();
 
     uploadFile()
 }
@@ -50,7 +51,7 @@ const handleFileSelect = () => {
     if (validateFiles(input)) {
         file.value = input[0]
     }
-
+    previewVideo();
     uploadFile();
 }
 
@@ -112,38 +113,54 @@ const uploadFile = async () => {
     }
 };
 
+const vidSrc = ref() // template buat hubungin sama html, mirip getElementBy...., buat bisa pake di html
+
+function previewVideo(){
+    // let video = document.getElementById('video-preview');
+    // console.log(videoPreview.value)
+    vidSrc.value = URL.createObjectURL(file.value); // buat bikin dari object file jadi URL, soalnya video sourcenya harus URL 
+}
+
 </script>
 
 <template>
     <div id="allUpload">
         <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop"
-            :style="isDragging && 'border-color: #EFDAFF; width: 100%; height: 91%; padding: 10.2rem; transition: 0.6s'">
-            <h1>Upload your video to know if its Deepfake or not</h1>
-            <div class="inputFileButton">
+            :style="(isDragging && 'border-color: #EFDAFF; width: 100%; height: 91%; padding: 10.2rem; transition: 0.6s') || (file != '' && 'padding: 3.44rem')">
+            <h1 v-if="file == ''">Upload your video to know if its Deepfake or not</h1>
+            <div class="inputFileButton" v-if="file == ''">
                 <button class="theFileButton" @click="getFile()" @change="onchange"
                     :style="!isDragging && 'pointer-events: auto'">Upload video</button>
                 <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;"
                     @change="handleFileSelect">
             </div>
             <Toast></Toast>
-            <label for="drop-zone" class="file-label">
+            <label for="drop-zone" class="file-label" v-if="file == ''">
                 <div v-if="isDragging">Release to drop file here.</div>
                 <div v-else>or drop file here to upload.</div>
             </label>
             <div class="preview" v-if="file">
                 <div class="preview-card">
-                    <div>
+                    <div class="fileName">
+                    <video id="video-preview" controls :src="vidSrc" :style="!isDragging && 'pointer-events: auto'" height="300" width="500"></video>
+                    <!-- pake : sebelum src biar dinamis, jadi bisa ganti2 sesuai isi dari si vidSrc (input user) atau dari yang di refnya -->
                         <p>
                             {{ file.name }}
                         </p>
                     </div>
                     <div>
                         <button class="removeButton" type="button" :style="!isDragging && 'pointer-events: auto'"
-                            @click="file = null" title="Remove file">
+                            @click="file = ''" title="Remove file">
                             <b>×</b>
                         </button>
                     </div>
                 </div>
+            </div>
+            <div>
+                <h3>backback</h3>
+                <button>Re-upload</button>
+                <h3>or</h3>
+                <button>Analyze now</button>
             </div>
         </div>
     </div>
@@ -217,20 +234,24 @@ const uploadFile = async () => {
 
 .preview-card {
     display: flex;
-    border: 1px solid #a2a2a2;
+    /* border: 1px solid #a2a2a2; */
     padding: 5px;
     margin-left: 5px;
 }
 
-.preview-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    border: 1px solid #a2a2a2;
-    background-color: #a2a2a2;
+.fileName {
+    overflow: hidden;
 }
 
 .removeButton {
     margin-left: 2rem;
+    border-radius: 60px;
+    cursor: pointer;
+    background-color: #202020;
+    border-color: #933ace;
+}
+
+.removeButton:hover {
+    background-color: #000000;
 }
 </style>
