@@ -59,7 +59,7 @@ function validateFiles(filesTemp) {
     if (filesTemp.length === 0) return;
     if (filesTemp.length > 1) {
         return false
-    }
+    }7
 
     const fileTemp = filesTemp[0];
     const allowedType = ['video/mp4', 'video/wmv', 'video/mov', 'video/avi', 'video/mkv', 'video/flv', 'video/webm'];
@@ -126,8 +126,8 @@ function previewVideo(){
 <template>
     <div id="allUpload">
         <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop"
-            :style="(isDragging && 'border-color: #EFDAFF; width: 100%; height: 91%; padding: 10.2rem; transition: 0.6s') || (file != '' && 'padding: 3.44rem')">
-            <h1 v-if="file == ''">Upload your video to know if its Deepfake or not</h1>
+            :style="(isDragging && 'border-color: #EFDAFF; width: 100%; height: 91%; padding: 10.2rem; transition: 0.6s; background-color: #933ace52;') || (file != '' && 'padding: 3.44rem')">
+            <h1 class="text" v-if="file == ''">Upload your video to know if its Deepfake or not</h1>
             <div class="inputFileButton" v-if="file == ''">
                 <button class="theFileButton" @click="getFile()" @change="onchange"
                     :style="!isDragging && 'pointer-events: auto'">Upload video</button>
@@ -154,13 +154,16 @@ function previewVideo(){
                             <b>×</b>
                         </button>
                     </div>
+                    <div class="after-upload">
+                        <h2 class="text">Want to upload another video?</h2>
+                        <button class="theFileButton" @click="getFile()" @change="onchange"
+                            :style="!isDragging && 'pointer-events: auto'">Re-Upload</button>
+                        <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;"
+                            @change="handleFileSelect">
+                        <h3 class="text">or</h3>
+                        <RouterLink to="/Login" class="analyzeButton rainbow" style="color: #ffffff; pointer-events: auto;">Analyze Now</RouterLink>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <h3>backback</h3>
-                <button>Re-upload</button>
-                <h3>or</h3>
-                <button>Analyze now</button>
             </div>
         </div>
     </div>
@@ -214,6 +217,7 @@ function previewVideo(){
     /* cursor: pointer; */
     display: flex;
     flex-direction: column;
+    transition: all 0.6s;
 }
 
 #drop-zone * {
@@ -237,6 +241,15 @@ function previewVideo(){
     /* border: 1px solid #a2a2a2; */
     padding: 5px;
     margin-left: 5px;
+    flex-direction: row; 
+}
+
+.after-upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
 }
 
 .fileName {
@@ -254,4 +267,104 @@ function previewVideo(){
 .removeButton:hover {
     background-color: #000000;
 }
+
+.text {
+    color: #ffffff;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+h2 {
+    font-weight: 600;
+}
+
+:root {
+  --angle: 45deg;
+  --opacity: 0.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.rainbow {
+    color: #ffffff;
+    background-color: #202020;
+    border-radius: 40px;
+    padding: 0.3rem 2rem 0.3rem 2rem;
+    border: 1px solid #933ace;
+    border-top: #933ace;
+    border-left: #933ace;
+    transition: border 1s ease;
+    cursor: pointer;
+
+    --border-size: 0.1rem;
+    border: var(--border-size) dotted transparent;
+    background-image: linear-gradient(
+        to right,
+        #202020,
+        #202020                                                       
+    ),
+    conic-gradient(
+        from var(--angle),
+        transparent 0deg 54deg,
+        #933ace 70deg 180deg,
+        #933ace 180deg 216deg,
+        transparent 235deg 360deg
+    );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+@property --opacity {
+  syntax: "<number>";
+  initial-value: 0.5;
+  inherits: false;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.rainbow:hover {
+  animation: rotate 2s linear infinite;
+   background-image: linear-gradient(
+        to right,
+        #000000,
+        #000000 
+   ),
+    conic-gradient(
+        from var(--angle),
+        transparent 0deg 54deg,
+        #933ace 70deg 180deg,
+        #933ace 180deg 216deg,
+        transparent 235deg 360deg
+    );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    transition: background-image 1s;
+}
+
+.analyzeButton {
+    text-decoration: none;
+    color: #EFDAFF;
+    font-weight: 600;
+    gap: 10px;
+    font-size: 15px;
+}
+
+
 </style>

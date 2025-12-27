@@ -7,7 +7,7 @@ import Upload from '@/components/Upload.vue'
 
 const routes = [
     {
-        path: '/',
+        path: '/:',
         name: 'Home',
         component: Home
     },

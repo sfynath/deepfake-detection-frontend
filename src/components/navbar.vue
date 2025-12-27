@@ -19,12 +19,12 @@
                     <a class="navLink" v-else href="#Contact">Contact Us</a>    
                 </div>
             </nav>
-            <div class="border
+            <!-- <div class="border
             ">
                 <nav>
                     <RouterLink to="/Login" class="navLink rainbow" style="color: #ffffff;">Login</RouterLink>
                 </nav>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -122,7 +122,7 @@
     }
 } */
 
-:root {
+/* :root {
   --angle: 45deg;
   --opacity: 0.5;
 }
@@ -204,6 +204,6 @@
     background-clip: padding-box, border-box;
 
     transition: background-image 1s;
-}
+} */
 
 </style>

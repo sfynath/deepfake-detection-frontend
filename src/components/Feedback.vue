@@ -109,12 +109,12 @@ h2 {
     margin-top: 1rem;
     width: 80%;
     font-weight: 600;
-    background-color: #6b75ff;
+    background-color: #933ace;
     transition: 0.7s;
 }
 
 #formFeedback button:hover {
-    background-color: #3a44c9;
+    background-color: #5d0c76;
     color: rgb(255, 255, 255);
 }
 
