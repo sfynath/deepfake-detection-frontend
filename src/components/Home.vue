@@ -2,11 +2,21 @@
   import Studies from './Studies.vue';
   import Feedback from './Feedback.vue';
   import { ref } from 'vue';
+  import { usefileStore } from '@/store/fileStore';
+  import { onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
+  import ProgressBar from 'primevue/progressbar';
+
 
   const isDragging = ref(false)
   const fileInput = ref(null);
-
+  const store = usefileStore()
   const files = ref([])
+  const router = useRouter()
+
+  onMounted(() => {
+    store.setFile('')
+  })
 
   function dragover(e) {
     e.preventDefault()
@@ -23,7 +33,9 @@
     isDragging.value = false
 
     const dropped = Array.from(e.dataTransfer.files)
-    files.value = dropped
+    files.value = dropped[0]
+    store.setFile(files.value)
+    router.push({path: '/upload'})
   }
 
   function onchange(e) {
@@ -47,7 +59,7 @@
 
 <template>
   <div>
-    <div class="home" id="home">
+    <div class="home" id="home" @dragover="dragover" @dragleave="dragleave" @drop="drop">
       <div class="homeVideo">
         <div class="centerHomeVideo">
           <video class="theHomeVideo" autoplay muted loop>
@@ -56,14 +68,16 @@
           </video>
         </div>
       </div>
-      <div id="homeRightSide">
+      <div id="drop-zone" class="homeRightSide">
         <div class="centerRightSide">
           <h1>Deepfake Video Detector Tool</h1>
   
-          <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop">
+          <div id="wasdrop-zone">
             <div class="inputFileButton">
-              <button class="theFileButton" @click="getFile()" @change="onchange">Upload your video here!</button>
-              <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;" @change="handleFileSelect">
+              <RouterLink to="/Upload">
+                <button class="theFileButton" @click="getFile()" @change="onchange" :style="!isDragging && 'pointer-events: auto'">Upload your video here!</button>
+                <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;" @change="handleFileSelect">
+              </RouterLink>
             </div>
             
             <label for="drop-zone" class="file-label">
@@ -76,6 +90,12 @@
           
         </div>
       </div>
+      <div v-if="isDragging">
+        <div class="dragging" style="color: #ffffff; font-weight: 700; font-size: 30px;">drop files here to upload</div>
+      </div>
+    </div>
+    <div class="card">
+        <ProgressBar :value="50"></ProgressBar>
     </div>
     <Studies></Studies>
     <Feedback></Feedback>
@@ -142,7 +162,7 @@ h1 {
     border-radius: 60px;
   }
   
-#homeRightSide {
+.homeRightSide {
     width: 50vw;
     display: inline-block;
     align-items: center;
@@ -155,7 +175,7 @@ h1 {
     flex-direction: column;
 }
 
-#drop-zone {
+#wasdrop-zone {
   width: 100%;
   height: 100%;
   margin: 20px auto;
@@ -169,6 +189,30 @@ h1 {
 
 #preview {
   text-align: center;
+}
+
+#home * {
+    pointer-events: none;
+}
+
+.dragging {
+  position: fixed;
+  border-style: dashed;
+  border-color: #EFDAFF;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  /* padding: 10rem; */
+  /* margin: 20px auto; */
+  text-align: center;
+  line-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: column; */
+  background-color: #933acead;
+  transition: all 0.6s;
 }
 
 </style>

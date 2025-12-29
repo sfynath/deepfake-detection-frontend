@@ -6,6 +6,7 @@ import router from '../router'
 import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import { createPinia } from 'pinia';
 
 createApp(App)
     .use(router)
@@ -15,4 +16,5 @@ createApp(App)
             preset: Aura
         }
     })
+    .use(createPinia())
     .mount('#app')

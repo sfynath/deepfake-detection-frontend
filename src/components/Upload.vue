@@ -1,13 +1,47 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { usefileStore } from '@/store/fileStore';
+import ProgressBar from 'primevue/progressbar';
 
 const toast = useToast();
 const fileInput = ref(null);
-
+const store = usefileStore()
 const isDragging = ref(false)
-const file = ref(false)
+const file = ref('')
+console.log(file.value)
+const result = ref(false)
+const value1 = ref(0)
+const interval = ref()
+const loading = ref(false)
+
+onMounted (() => {
+    if(store.file) {
+        file.value = store.file
+        previewVideo()
+    }
+    startProgress();
+});
+
+onBeforeUnmount(() => {
+    endProgress();
+});
+
+const startProgress = () => {
+    interval.value = setInterval(() => {
+        let newValue = value1.value + Math.floor(Math.random() * 10) + 1;
+        if (newValue >= 100) {
+            newValue = 100;
+            toast.add({ severity: 'info', summary: 'Success', detail: 'Process Completed', life: 1000 });
+        }
+        value1.value = newValue;
+    }, 2000);
+};
+const endProgress = () => {
+    clearInterval(interval.value);
+    interval.value = null;
+};
 
 function dragover(e) {
     e.preventDefault()
@@ -28,8 +62,6 @@ function drop(e) {
         file.value = dropped[0]
     }
     previewVideo();
-
-    uploadFile()
 }
 
 function onchange(e) {
@@ -52,7 +84,6 @@ const handleFileSelect = () => {
         file.value = input[0]
     }
     previewVideo();
-    uploadFile();
 }
 
 function validateFiles(filesTemp) {
@@ -90,11 +121,8 @@ const uploadFile = async () => {
         const formData = new FormData();
         formData.append('file', file.value);
         // Replace with your backend URL
+        loading.value = true
         const response = await axios.post('http://127.0.0.1:5000/api/predict', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }, {
             // Optional: Track upload progress
             onUploadProgress: (progressEvent) => {
                 const percent = Math.round(
@@ -102,14 +130,20 @@ const uploadFile = async () => {
                 );
                 console.log(`Upload progress: ${percent}%`);
             },
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         });
 
         if (response.status === 200) {
             toast.add({ severity: 'success', summary: 'Upload Success', detail: `${response.data.label}`, life: 3000 })
+            result.value = response.data
+            console.log(file.value)
         }
     } catch (err) {
         console.error('Upload error:', err);
     } finally {
+        loading.value = false
     }
 };
 
@@ -125,7 +159,7 @@ function previewVideo(){
 
 <template>
     <div id="allUpload">
-        <div id="drop-zone" @dragover="dragover" @dragleave="dragleave" @drop="drop"
+        <div id="drop-zone" v-if="result == '' && !loading" @dragover="dragover" @dragleave="dragleave" @drop="drop"
             :style="(isDragging && 'border-color: #EFDAFF; width: 100%; height: 91%; padding: 10.2rem; transition: 0.6s; background-color: #933ace52;') || (file != '' && 'padding: 3.44rem')">
             <h1 class="text" v-if="file == ''">Upload your video to know if its Deepfake or not</h1>
             <div class="inputFileButton" v-if="file == ''">
@@ -139,7 +173,7 @@ function previewVideo(){
                 <div v-if="isDragging">Release to drop file here.</div>
                 <div v-else>or drop file here to upload.</div>
             </label>
-            <div class="preview" v-if="file">
+            <div class="preview" v-if="file && !loading">
                 <div class="preview-card">
                     <div class="fileName">
                     <video id="video-preview" controls :src="vidSrc" :style="!isDragging && 'pointer-events: auto'" height="300" width="500"></video>
@@ -161,16 +195,26 @@ function previewVideo(){
                         <input type="file" accept="video/*" id="getFile" ref="fileInput" style="display: none;"
                             @change="handleFileSelect">
                         <h3 class="text">or</h3>
-                        <RouterLink to="/Login" class="analyzeButton rainbow" style="color: #ffffff; pointer-events: auto;">Analyze Now</RouterLink>
+                        <button class="analyzeButton rainbow" @click="uploadFile();" style="color: #ffffff; pointer-events: auto;">Analyze Now</button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="card" v-if="loading">
+            <ProgressBar :value="value1"></ProgressBar>
+        </div>
+        <div id="Result" v-if="result">
+            <div class="label">{{result.label}}</div>
+            <div>{{result.response}}</div>
+        </div>
     </div>
-
 </template>
 
 <style scoped>
+    .card {
+        width:100%;
+        height:100%;
+    }
 #allUpload {
     width: 100%;
     padding: 3rem;
@@ -295,7 +339,7 @@ h2 {
     color: #ffffff;
     background-color: #202020;
     border-radius: 40px;
-    padding: 0.3rem 2rem 0.3rem 2rem;
+    padding: 18px 24px 18px 24px;
     border: 1px solid #933ace;
     border-top: #933ace;
     border-left: #933ace;
@@ -366,5 +410,22 @@ h2 {
     font-size: 15px;
 }
 
+.progress {
+    position: fixed;
+    width: 100%;
+    /* height: 100vh; */
+    /* top: 0; */
+    /* left: 0; */
+    /* padding: 10rem; */
+    /* margin: 20px auto; */
+    text-align: center;
+    /* line-height: 50px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-direction: column; */
+    background-color: #933acead;
+    /* transition: all 0.6s; */
+}
 
 </style>
