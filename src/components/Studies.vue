@@ -1,13 +1,15 @@
 <template>
     <div id="allStudies">
-        <h1 id="About">The Study That Powers Our Detection System</h1>
+        <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }">
+            <h1 id="About">The Study That Powers Our Detection System</h1>
+        </div>
         <div class="ELAsection">
-            <div class="videoStudiesELA">
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="videoStudiesELA">
                 <video class="ELAvideo" autoplay loop muted>
                     <source src="../vid/ELAwebasset.mp4">
                 </video>
             </div>
-            <div class="ELAtext">
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="ELAtext">
                 <h2 class="subTitle2">Error Level Analysis</h2>
                 <h3>A Digital Forensics Technique for Revealing Visual Manipulation</h3>
                 <p>Before applying ELA, the uploaded video is first converted into individual frames. This step is important because ELA works at the image level, each frame must be analyzed separately to detect subtle manipulation patterns that appear across the video.</p>
@@ -27,7 +29,7 @@
             </div>
         </div>
         <div class="xceptionSection">
-            <div class="xceptionText">
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="xceptionText">
                 <h2>XceptionNet</h2>
                 <h3>A Deep Learning Model for High-Accuracy Deepfake Detection</h3>
                 <p>XceptionNet is a deep learning architecture designed to extract complex visual patterns efficiently. The model uses depthwise separable convolutions, allowing it to learn detailed features from images or video frames while keeping computation lightweight. This makes XceptionNet highly effective for detecting subtle manipulation artifacts commonly found in deepfake content.</p>
@@ -42,18 +44,18 @@
                 <h3>Why We Use XceptionNet</h3>
                 <p>XceptionNet is known for its high accuracy in visual classification tasks and has shown strong performance in detecting deepfake manipulations, even in heavily compressed videos. Its architecture allows the system to identify subtle inconsistencies that traditional CNNs often miss, making it a reliable backbone for deepfake detection.</p>
             </div>
-            <div class="imageStudiesXception">
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="imageStudiesXception">
                 <img class="xceptionImage" src="../img/Proposed-structure-of-Xception-network-used-within-each-stream-of-CNN.jpg" alt="">
             </div>
         </div>
 
         <div class="resultsSection">
-            <h1>Powered by Research, Proven by Results</h1>
-            <div class="imageResults">
+            <h1 v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }">Powered by Research, Proven by Results</h1>
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="imageResults">
                 <img class="matrix" src="" alt="">
             </div>
-            <div class="resultsText">
-                <p class="presults">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi dignissimos, repudiandae repellendus at nihil fugit, incidunt accusamus quas blanditiis porro facere ducimus ea. Unde necessitatibus vel incidunt autem praesentium molestias.</p>
+            <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="resultsText">
+                <p style="text-align: center;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi dignissimos, repudiandae repellendus at nihil fugit, incidunt accusamus quas blanditiis porro facere ducimus ea. Unde necessitatibus vel incidunt autem praesentium molestias.</p>
             </div>
         </div>
     </div>
@@ -156,10 +158,11 @@ h3 {
 .resultsSection {
     padding: 5rem 5rem 0 5rem;
     width: 100%;
+    align-items: center;
 }
 
-.presults {
+/* .presults {
     text-align: center;
-}
+} */
 
 </style>

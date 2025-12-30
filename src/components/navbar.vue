@@ -12,7 +12,7 @@
                 <div class="navigationPosition">
                     <RouterLink v-if="$route.fullPath !== '/'" to="/" class="navLink">Home</RouterLink>
                     <a class="navLink" v-else href="#home">Home</a>
-                    <RouterLink to="/Upload" class="navLink">Upload</RouterLink>
+                    <RouterLink :to="{ path: '/upload', query: { reset: Date.now() } }" class="navLink">Upload</RouterLink>
                     <RouterLink v-if="$route.fullPath !== '/'" to="/#allStudies" class="navLink">About</RouterLink>
                     <a class="navLink" v-else href="#allStudies">About</a>
                     <RouterLink v-if="$route.fullPath !== '/'" to="/#Contact" class="navLink">Contact Us</RouterLink>
@@ -41,6 +41,7 @@
     left: 0;
     right: 0;
     /* background-color: #2f3556; */
+    z-index: 100;
 }
 
 .logo {

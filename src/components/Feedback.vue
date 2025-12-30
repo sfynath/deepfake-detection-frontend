@@ -15,18 +15,18 @@
 
 <template>
     <div class="allFeedback">
-        <div class="feedbackSection">
+        <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-t-20 animate-duration-1000' }" class="feedbackSection">
             <h1 id="Contact">Have feedback?</h1>
             <h2>Let us know!</h2>
     
             <form @submit.prevent="sendFeedback" id="formFeedback">
-                <input type="text" placeholder="Your name" id="name" style="background-color: #ffffff;">
-                <textarea name="" id="feedback" placeholder="Your feedback" style="background-color: #ffffff;"></textarea>
+                <input type="text" placeholder="Your name" id="name" style="background-color: #ffffff; color: #4d4d4d;">
+                <textarea name="" id="feedback" placeholder="Your feedback" style="background-color: #ffffff; color: #4d4d4d;"></textarea>
                 <Toast />
-                <button type="submit" @click="show()">Submit!</button>
+                <button  type="submit" @click="show()">Submit</button>
             </form>
         </div>
-        <div class="connectSection">
+        <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-b-20 animate-duration-1000' }" class="connectSection">
             <h2>Connect With Us</h2>
             <div>
                 <p>For questions, support, or further information, please contact us through the details below.</p>

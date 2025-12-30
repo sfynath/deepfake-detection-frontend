@@ -1,159 +1,187 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import Toast from 'primevue/toast';
-import { useToast } from 'primevue/usetoast';
-import { usefileStore } from '@/store/fileStore';
-import ProgressBar from 'primevue/progressbar';
+    import { ref, onMounted, onBeforeUnmount } from 'vue';
+    import Toast from 'primevue/toast';
+    import { useToast } from 'primevue/usetoast';
+    import { usefileStore } from '@/store/fileStore';
+    import ProgressBar from 'primevue/progressbar';
+    import axios from 'axios'; // Import Axios
+    
+    const toast = useToast();
+    const fileInput = ref(null);
+    const store = usefileStore()
+    const isDragging = ref(false)
+    const file = ref('')
+    const result = ref(false)
+    const value1 = ref(0)
+    const loading = ref(false)
+    var timeout;
+    const vidSrc = ref() // template buat hubungin sama html, mirip getElementBy...., buat bisa pake di html
 
-const toast = useToast();
-const fileInput = ref(null);
-const store = usefileStore()
-const isDragging = ref(false)
-const file = ref('')
-console.log(file.value)
-const result = ref(false)
-const value1 = ref(0)
-const interval = ref()
-const loading = ref(false)
-
-onMounted (() => {
-    if(store.file) {
-        file.value = store.file
-        previewVideo()
-    }
-    startProgress();
-});
-
-onBeforeUnmount(() => {
-    endProgress();
-});
-
-const startProgress = () => {
-    interval.value = setInterval(() => {
-        let newValue = value1.value + Math.floor(Math.random() * 10) + 1;
-        if (newValue >= 100) {
-            newValue = 100;
-            toast.add({ severity: 'info', summary: 'Success', detail: 'Process Completed', life: 1000 });
+    onMounted (() => {
+        if(store.file) {
+            file.value = store.file
+            previewVideo()
         }
-        value1.value = newValue;
-    }, 2000);
-};
-const endProgress = () => {
-    clearInterval(interval.value);
-    interval.value = null;
-};
+    });
 
-function dragover(e) {
-    e.preventDefault()
-    isDragging.value = true
-}
-
-function dragleave(e) {
-    e.preventDefault()
-    isDragging.value = false
-}
-
-function drop(e) {
-    e.preventDefault()
-    isDragging.value = false
-
-    const dropped = Array.from(e.dataTransfer.files)
-    if (validateFiles(dropped)) {
-        file.value = dropped[0]
-    }
-    previewVideo();
-}
-
-function onchange(e) {
-    file.value = Array.from(e.target.files)[0];
-}
-
-function getFile() {
-    document.getElementById("getFile").click();
-
-}
-
-function remove(i) {
-    // this.files.splice(i, 1);
-}
-
-const handleFileSelect = () => {
-    // Access selected files from the input's files property
-    const input = fileInput.value.files;
-    if (validateFiles(input)) {
-        file.value = input[0]
-    }
-    previewVideo();
-}
-
-function validateFiles(filesTemp) {
-    if (filesTemp.length === 0) return;
-    if (filesTemp.length > 1) {
-        return false
-    }7
-
-    const fileTemp = filesTemp[0];
-    const allowedType = ['video/mp4', 'video/wmv', 'video/mov', 'video/avi', 'video/mkv', 'video/flv', 'video/webm'];
-    // const maxSize = 5 * 1024 * 1024; //5 MB 
-    if (!allowedType.includes(fileTemp.type)) {
-        toast.add({ severity: 'danger', summary: 'Upload Failed', detail: 'Only video files are allowed.', life: 3000 })
-        return false
+    function dragover(e) {
+        e.preventDefault()
+        isDragging.value = true
     }
 
-    // if(fileTemp.size > maxSize) {
-    //     toast.add({severity: 'danger', summary: 'Upload Failed', detail: 'File size must be less than 5MB.', life: 3000})
-    //     return false
-    // }
-
-    // Validation passed
-    file.value = fileTemp;
-    return true
-}
-
-import axios from 'axios'; // Import Axios
-
-const uploadFile = async () => {
-    if (!file.value) {
-        return;
+    function dragleave(e) {
+        e.preventDefault()
+        isDragging.value = false
     }
 
-    try {
-        const formData = new FormData();
-        formData.append('file', file.value);
-        // Replace with your backend URL
-        loading.value = true
-        const response = await axios.post('http://127.0.0.1:5000/api/predict', formData, {
-            // Optional: Track upload progress
-            onUploadProgress: (progressEvent) => {
-                const percent = Math.round(
-                    (progressEvent.loaded * 100) / progressEvent.total
-                );
-                console.log(`Upload progress: ${percent}%`);
-            },
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    function drop(e) {
+        e.preventDefault()
+        isDragging.value = false
+
+        const dropped = Array.from(e.dataTransfer.files)
+        if (validateFiles(dropped)) {
+            file.value = dropped[0]
+        }
+        previewVideo();
+    }
+
+    function onchange(e) {
+        file.value = Array.from(e.target.files)[0];
+    }
+
+    function getFile() {
+        document.getElementById("getFile").click();
+
+    }
+
+    const handleFileSelect = () => {
+        // Access selected files from the input's files property
+        const input = fileInput.value.files;
+        if (validateFiles(input)) {
+            file.value = input[0]
+        }
+        previewVideo();
+    }
+
+    function validateFiles(filesTemp) {
+        if (filesTemp.length === 0) return;
+        if (filesTemp.length > 1) {
+            return false
+        }7
+
+        const fileTemp = filesTemp[0];
+        const allowedType = ['video/mp4', 'video/wmv', 'video/mov', 'video/avi', 'video/mkv', 'video/flv', 'video/webm'];
+        // const maxSize = 5 * 1024 * 1024; //5 MB 
+        if (!allowedType.includes(fileTemp.type)) {
+            toast.add({ severity: 'danger', summary: 'Upload Failed', detail: 'Only video files are allowed.', life: 3000 })
+            return false
+        }
+
+        // if(fileTemp.size > maxSize) {
+        //     toast.add({severity: 'danger', summary: 'Upload Failed', detail: 'File size must be less than 5MB.', life: 3000})
+        //     return false
+        // }
+
+        // Validation passed
+        file.value = fileTemp;
+        return true
+    }
+
+    const uploadFile = async () => {
+        // window
+
+        if (!file.value) {
+            return;
+        }
+        
+        try {
+            getStatus();
+            const formData = new FormData();
+            formData.append('file', file.value);
+            // Replace with your backend URL
+            loading.value = true
+            const response = await axios.post('http://127.0.0.1:5000/api/predict', formData, {
+                // Optional: Track upload progress
+                onUploadProgress: (progressEvent) => {
+                    const percent = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    console.log(`Upload progress: ${percent}%`);
+                },
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.status === 200) {
+                toast.add({ severity: 'success', summary: 'Upload Success', detail: `${response.data.label}`, life: 3000 })
+                result.value = response.data
+                console.log(file.value)
             }
-        });
-
-        if (response.status === 200) {
-            toast.add({ severity: 'success', summary: 'Upload Success', detail: `${response.data.label}`, life: 3000 })
-            result.value = response.data
-            console.log(file.value)
+        } catch (err) {
+            console.error('Upload error:', err);
+        } finally {
+            loading.value = false
         }
-    } catch (err) {
-        console.error('Upload error:', err);
-    } finally {
-        loading.value = false
+        
+    };
+
+    function previewVideo(){
+        // let video = document.getElementById('video-preview');
+        // console.log(videoPreview.value)
+        vidSrc.value = URL.createObjectURL(file.value); // buat bikin dari object file jadi URL, soalnya video sourcenya harus URL 
     }
-};
 
-const vidSrc = ref() // template buat hubungin sama html, mirip getElementBy...., buat bisa pake di html
+    async function getStatus() {
+        let get;
+        
+        try {
+            const res = await fetch("http://127.0.0.1:5000/api/status");
+            get = await res.json();
+        } catch (e) {
+            console.error("Error: ", e);
+        }
+        
+        value1.value = get.status * 10;
+        
+        if (get.status == 10){
+            clearTimeout(timeout);
+            return false;
+        }
+        
+        timeout = setTimeout(getStatus, 1000);
+    }
 
-function previewVideo(){
-    // let video = document.getElementById('video-preview');
-    // console.log(videoPreview.value)
-    vidSrc.value = URL.createObjectURL(file.value); // buat bikin dari object file jadi URL, soalnya video sourcenya harus URL 
+    import { useRoute } from 'vue-router'
+import { watch } from 'vue'
+
+const route = useRoute()
+
+function resetUpload() {
+  file.value = ''
+  result.value = false
+  loading.value = false
+  value1.value = 0
+  isDragging.value = false
+  vidSrc.value = undefined
+
+  // kalau pakai store buat simpan file, reset juga
+  store.setFile('')
+
+  // stop polling status kalau masih jalan
+  if (timeout) clearTimeout(timeout)
+
+  // reset input file biar bisa pilih file yang sama lagi
+  if (fileInput.value) fileInput.value.value = ''
 }
+
+watch(
+  () => route.query.reset,
+  () => resetUpload(),
+  { immediate: false }
+)
+
+
 
 </script>
 
@@ -201,20 +229,21 @@ function previewVideo(){
             </div>
         </div>
         <div class="card" v-if="loading">
-            <ProgressBar :value="value1"></ProgressBar>
+            <ProgressBar :value="value1" style="--p-progressbar-value-background: #933ace;"></ProgressBar>
         </div>
         <div id="Result" v-if="result">
-            <div class="label">{{result.label}}</div>
-            <div>{{result.response}}</div>
+            <div class="resultLabel" :style="result.label == 'FAKE' && 'color: #eb2e2e'">{{result.label}}</div>
+            <div class="resultResponse">{{result.response}}</div>
         </div>
     </div>
 </template>
 
 <style scoped>
-    .card {
-        width:100%;
-        height:100%;
-    }
+.card {
+    width:100%;
+    height:100%;
+}
+
 #allUpload {
     width: 100%;
     padding: 3rem;
@@ -426,6 +455,28 @@ h2 {
     /* flex-direction: column; */
     background-color: #933acead;
     /* transition: all 0.6s; */
+}
+
+#Result {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 14rem 5rem 13rem 5rem;
+}
+
+.resultResponse{
+    color: #ffffff;
+}
+
+.resultLabel {
+    font-weight: bold;
+    font-size: 45px;
+    color: #48e15f;
+    padding-bottom: 1.5rem;
 }
 
 </style>

@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/tailwind.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -7,6 +8,7 @@ import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { createPinia } from 'pinia';
+import AnimateOnScroll from 'primevue/animateonscroll';
 
 createApp(App)
     .use(router)
@@ -17,4 +19,5 @@ createApp(App)
         }
     })
     .use(createPinia())
+    .directive('animateonscroll', AnimateOnScroll)
     .mount('#app')

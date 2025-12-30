@@ -7,7 +7,7 @@ import Upload from '@/components/Upload.vue'
 
 const routes = [
     {
-        path: '/:',
+        path: '/',
         name: 'Home',
         component: Home
     },
@@ -24,18 +24,41 @@ const routes = [
     }
 ]
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
+function waitForEl(selector, timeout = 1500) {
+  return new Promise((resolve) => {
+    const start = performance.now()
 
-    scrollBehavior(to, from, savedPosition) {
-        if(to.hash){
-            return{
-                el: to.hash,
-                behavior: 'smooth',
-            }
-        }
+    const check = () => {
+      const el = document.querySelector(selector)
+      if (el) return resolve(el)
+      if (performance.now() - start > timeout) return resolve(null)
+      requestAnimationFrame(check)
     }
+
+    check()
+  })
+}
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  async scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+
+    if (to.hash) {
+      const el = await waitForEl(to.hash)
+      if (el) {
+        return {
+          el: to.hash,
+          behavior: 'smooth',
+          // opsional kalau navbar kamu fixed dan nutupin section
+          top: 90,
+        }
+      }
+    }
+
+    return { top: 0 }
+  },
 })
 
 export default router

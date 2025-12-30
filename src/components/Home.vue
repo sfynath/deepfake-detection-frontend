@@ -5,8 +5,6 @@
   import { usefileStore } from '@/store/fileStore';
   import { onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-  import ProgressBar from 'primevue/progressbar';
-
 
   const isDragging = ref(false)
   const fileInput = ref(null);
@@ -61,7 +59,7 @@
   <div>
     <div class="home" id="home" @dragover="dragover" @dragleave="dragleave" @drop="drop">
       <div class="homeVideo">
-        <div class="centerHomeVideo">
+        <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="centerHomeVideo">
           <video class="theHomeVideo" autoplay muted loop>
             <source src="../vid/01_15__outside_talking_still_laughing__02HILKYO.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -70,9 +68,9 @@
       </div>
       <div id="drop-zone" class="homeRightSide">
         <div class="centerRightSide">
-          <h1>Deepfake Video Detector Tool</h1>
+          <h1 v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }">Deepfake Video Detector Tool</h1>
   
-          <div id="wasdrop-zone">
+          <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" id="wasdrop-zone">
             <div class="inputFileButton">
               <RouterLink to="/Upload">
                 <button class="theFileButton" @click="getFile()" @change="onchange" :style="!isDragging && 'pointer-events: auto'">Upload your video here!</button>
@@ -94,11 +92,8 @@
         <div class="dragging" style="color: #ffffff; font-weight: 700; font-size: 30px;">drop files here to upload</div>
       </div>
     </div>
-    <div class="card">
-        <ProgressBar :value="50"></ProgressBar>
-    </div>
-    <Studies></Studies>
-    <Feedback></Feedback>
+      <Studies></Studies>
+      <Feedback></Feedback>
   </div>
 </template>
 
