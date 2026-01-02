@@ -63,7 +63,7 @@
 
 <style scoped>
 #allStudies {
-    padding: 7rem 5rem 0 5rem;
+    padding: 6rem 5rem 0 5rem;
     width: 100%;
 }
 

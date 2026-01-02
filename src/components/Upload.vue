@@ -5,17 +5,27 @@
     import { usefileStore } from '@/store/fileStore';
     import ProgressBar from 'primevue/progressbar';
     import axios from 'axios'; // Import Axios
-    
+    import { useRoute } from 'vue-router'
+    import { watch } from 'vue'
+
+    const route = useRoute()
     const toast = useToast();
     const fileInput = ref(null);
     const store = usefileStore()
     const isDragging = ref(false)
     const file = ref('')
-    const result = ref(false)
+    const result = ref('')
     const value1 = ref(0)
     const loading = ref(false)
-    var timeout;
+    
+    let timeoutStatus = null
+    let timeoutResult = null
+
     const vidSrc = ref() // template buat hubungin sama html, mirip getElementBy...., buat bisa pake di html
+    const jobId = ref(null)
+    const phase = ref('')
+    const elaImage = ref(null)
+
 
     onMounted (() => {
         if(store.file) {
@@ -23,6 +33,10 @@
             previewVideo()
         }
     });
+
+    onBeforeUnmount(() => {
+        stopPolling()
+    })
 
     function dragover(e) {
         e.preventDefault()
@@ -89,18 +103,26 @@
 
     const uploadFile = async () => {
         // window
+        stopPolling()
+        value1.value = 0
+        phase.value = ''
+        jobId.value = null
+        loading.value = true
+        result.value = ''
+        elaImage.value = null
 
         if (!file.value) {
+            loading.value = false
             return;
         }
         
         try {
-            getStatus();
+            // getStatus();
             const formData = new FormData();
             formData.append('file', file.value);
             // Replace with your backend URL
             loading.value = true
-            const response = await axios.post('http://127.0.0.1:5000/api/predict', formData, {
+            const response = await axios.post('http://127.0.0.1:5001/api/predict', formData, {
                 // Optional: Track upload progress
                 onUploadProgress: (progressEvent) => {
                     const percent = Math.round(
@@ -113,16 +135,21 @@
                 }
             });
 
-            if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Upload Success', detail: `${response.data.label}`, life: 3000 })
-                result.value = response.data
-                console.log(file.value)
+            if (response.status === 202 || response.status === 200) {
+                jobId.value = response.data.job_id
+
+                // mulai polling progress
+                getStatus()
+
+                // mulai polling result
+                pollResult()
             }
         } catch (err) {
             console.error('Upload error:', err);
-        } finally {
             loading.value = false
         }
+        // finally {
+        // }
         
     };
 
@@ -133,55 +160,109 @@
     }
 
     async function getStatus() {
+        if(!jobId.value) return
+
         let get;
-        
         try {
-            const res = await fetch("http://127.0.0.1:5000/api/status");
+            const res = await fetch(`http://127.0.0.1:5001/api/status/${jobId.value}`);
             get = await res.json();
+
+            value1.value = get.pct
+            phase.value = get.phase
+
+            if (get.pct >= 100){
+                return;
+            }
+
+            timeoutStatus = setTimeout(getStatus, 700);
         } catch (e) {
             console.error("Error: ", e);
+            timeoutStatus = setTimeout(getStatus, 1000);
+            return
         }
-        
-        value1.value = get.status * 10;
-        
-        if (get.status == 10){
-            clearTimeout(timeout);
-            return false;
-        }
-        
-        timeout = setTimeout(getStatus, 1000);
     }
 
-    import { useRoute } from 'vue-router'
-import { watch } from 'vue'
+    async function pollResult() {
+        if (!jobId.value) return
 
-const route = useRoute()
+        try {
+            const res = await fetch(`http://127.0.0.1:5001/api/result/${jobId.value}`)
 
-function resetUpload() {
-  file.value = ''
-  result.value = false
-  loading.value = false
-  value1.value = 0
-  isDragging.value = false
-  vidSrc.value = undefined
+            // belum ready
+            if (res.status === 202) {
+                timeoutResult = setTimeout(pollResult, 1000)
+                return
+            }
 
-  // kalau pakai store buat simpan file, reset juga
-  store.setFile('')
+            const data = await res.json()
 
-  // stop polling status kalau masih jalan
-  if (timeout) clearTimeout(timeout)
+            // kalau backend balikin error object
+            if (data.error) {
+                loading.value = false
+                result.value = {
+                    label: "ERROR",
+                    response: data.message || "Something went wrong",
+                    trace: data.trace
+                }
+                toast.add({ severity: 'error', summary: 'Failed', detail: result.value.response, life: 5000 })
+                stopPolling()
+                return
+            }
 
-  // reset input file biar bisa pilih file yang sama lagi
-  if (fileInput.value) fileInput.value.value = ''
-}
+            result.value = data
+            loading.value = false
 
-watch(
-  () => route.query.reset,
-  () => resetUpload(),
-  { immediate: false }
-)
+            // optional: tampilkan ELA image
+            if (data.ela_image_b64) {
+                elaImage.value = `data:image/png;base64,${data.ela_image_b64}`
+            }
 
+            // optional: toast selesai
+            toast.add({ severity: 'info', summary: 'Success', detail: 'Process Completed', life: 1500 })
 
+            stopPolling()
+
+        } catch (e) {
+            console.error("Result error:", e)
+            timeoutResult = setTimeout(pollResult, 1200)
+        }
+    }
+
+    function resetUpload() {
+        file.value = ''
+        result.value = ''
+        loading.value = false
+        value1.value = 0
+        isDragging.value = false
+        vidSrc.value = undefined
+        jobId.value = null
+        phase.value = ''
+        elaImage.value = null
+
+        // kalau pakai store buat simpan file, reset juga
+        store.setFile('')
+
+        // stop polling status kalau masih jalan
+        // if (timeout) clearTimeout(timeout)
+
+        stopPolling()
+
+        // reset input file biar bisa pilih file yang sama lagi
+        if (fileInput.value) fileInput.value.value = ''
+    }
+
+    watch(
+        () => route.query.reset,
+        () => resetUpload(),
+        { immediate: false }
+    )
+
+    function stopPolling() {
+        if (timeoutStatus) clearTimeout(timeoutStatus)
+        if (timeoutResult) clearTimeout(timeoutResult)
+        timeoutStatus = null
+        timeoutResult = null
+    }
 
 </script>
 
@@ -229,11 +310,26 @@ watch(
             </div>
         </div>
         <div class="card" v-if="loading">
+            <Toast></Toast>
             <ProgressBar :value="value1" style="--p-progressbar-value-background: #933ace;"></ProgressBar>
+            <p class="text" style="margin-top: 12px;">{{ phase }}</p>
         </div>
         <div id="Result" v-if="result">
-            <div class="resultLabel" :style="result.label == 'FAKE' && 'color: #eb2e2e'">{{result.label}}</div>
-            <div class="resultResponse">{{result.response}}</div>
+            <div class="topResult">
+                <div style="color: #ffffff;">According to the detection process, this video is</div>
+                <div class="resultLabel" :style="result.label == 'FAKE' && 'color: #eb2e2e'">{{result.label}}</div>
+            </div>
+            <div class="midResult">
+                <img class="elaResult" v-if="elaImage" :src="elaImage" style="max-width:380px; border-radius:14px; margin-bottom:1rem;" />
+                <div class="midRightResult">
+                    <div class="resultResponse">{{result.response}}</div>
+                    <div class="botResult" style="padding: 1.7rem 0 0 0; text-align: right;">
+                        <RouterLink :to="{ path: '/upload', query: { reset: Date.now() } }" class="navLink">
+                        <button class="analyzeButton rainbow">Analyze another video</button>
+                        </RouterLink>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -461,22 +557,52 @@ h2 {
     position: fixed;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     text-align: center;
     align-items: center;
-    justify-content: center;
-    padding: 14rem 5rem 13rem 5rem;
+    flex-direction: column;
+    padding: 16rem 5rem 13rem 9rem;
+}
+
+.midResult {
+    width: 100%;
+    display: flex;
+    text-align: left;
+    /* justify-content: space-between; */
+    align-items: center;
+    flex-direction: row;
 }
 
 .resultResponse{
     color: #ffffff;
+    width: 50vw;
+    text-align: justify;
+}
+
+.elaResult {
+    width: 40vw;
+    align-items: center;
 }
 
 .resultLabel {
     font-weight: bold;
-    font-size: 45px;
+    font-size: 60px;
     color: #48e15f;
     padding-bottom: 1.5rem;
+}
+
+.botResult {
+    width: 50vw;
+    justify-content: right;
+}
+
+.midRightResult {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: left;
+    align-items: center;
+    flex-direction: column;
 }
 
 </style>

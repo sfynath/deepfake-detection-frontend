@@ -5,7 +5,7 @@
 <template>
     <div id="allnavbar">
         <div class="logoPosition">
-            <img class="logo" src="../assets/logo.svg" alt="">
+            <img class="logo" src="../assets/logo1.png" alt="">
         </div>
         <div id="blockNavbar">
             <nav id="navigationBar">
@@ -45,10 +45,10 @@
 }
 
 .logo {
-    width: 2vw;
+    width: 5vw;
     position: absolute;
     left: 3rem;
-    top: 2em;
+    top: 2rem;
 }
 
 #navigationBar{
