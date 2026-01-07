@@ -30,7 +30,7 @@
             <h2>Connect With Us</h2>
             <div>
                 <p>For questions, support, or further information, please contact us through the details below.</p>
-                <a href="">dummy@dummy.co.id</a>
+                <a href="">deepfakedetection.report@gmail.com</a>
             </div>
         </div>
     </div>

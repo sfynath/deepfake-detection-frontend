@@ -6,7 +6,7 @@
         <div class="ELAsection">
             <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="videoStudiesELA">
                 <video class="ELAvideo" autoplay loop muted>
-                    <source src="../vid/ELAwebasset.mp4">
+                    <source src="../vid/ELAvideofix.mp4">
                 </video>
             </div>
             <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="ELAtext">
@@ -16,11 +16,12 @@
                 <p>Error Level Analysis (ELA) is a digital forensics method used to identify signs of manipulation by examining inconsistencies in JPEG compression. Original images typically have uniform compression, while edited regions produce different error levels that can reveal traces of tampering.</p>
                 <h3>How ELA Works</h3>
                 <ul>
-                    <li>The image or video frame is resaved with a fixed compression quality.</li>
-                    <li>The system calculates pixel-by-pixel differences between the original frame and the recompressed version.</li>
-                    <li>Unaltered areas typically appear darker, indicating consistent compression.</li>
-                    <li>Manipulated areas appear brighter, showing significant compression differences.</li>
-                    <li>The results are visualized as a heatmap, highlighting suspicious regions.</li>
+                    <li>Each video is first split into individual frames for detailed analysis.</li>
+                    <li>Every frame is converted into the correct color format (RGB) and prepared for processing.</li>
+                    <li>The system resaves each frame at a fixed compression level, then compares it to the original.</li>
+                    <li>Differences in pixel compression levels create an “error map” — areas that look brighter indicate possible digital tampering.</li>
+                    <li>The error map is enhanced and normalized to make manipulation patterns clearer and easier to detect.</li>
+                    <li>These processed frames are then used as input for our deep learning model (XceptionNet) to identify potential deepfakes with higher accuracy.</li>
                     <br>
                 </ul>
                 <h3>Why We Use ELA</h3>
@@ -45,17 +46,18 @@
                 <p>XceptionNet is known for its high accuracy in visual classification tasks and has shown strong performance in detecting deepfake manipulations, even in heavily compressed videos. Its architecture allows the system to identify subtle inconsistencies that traditional CNNs often miss, making it a reliable backbone for deepfake detection.</p>
             </div>
             <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="imageStudiesXception">
-                <img class="xceptionImage" src="../img/Proposed-structure-of-Xception-network-used-within-each-stream-of-CNN.jpg" alt="">
+                <img class="xceptionImage" src="../img/xception.jpg" alt="">
+                <p style="color: #a9a9a9;">source: Chollet, F. (2017). Xception: Deep learning with depthwise separable convolutions. IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 1251–1258, diakses dari https://doi.org/10.1109/CVPR.2017.195</p>
             </div>
         </div>
 
         <div class="resultsSection">
             <h1 v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }">Powered by Research, Proven by Results</h1>
             <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-r-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="imageResults">
-                <img class="matrix" src="" alt="">
+                <img class="matrix" src="../assets/lagiTestAccuracy.png" alt="">
             </div>
             <div v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000', leaveClass: 'animate-leave fade-out-0' }" class="resultsText">
-                <p style="text-align: center;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi dignissimos, repudiandae repellendus at nihil fugit, incidunt accusamus quas blanditiis porro facere ducimus ea. Unde necessitatibus vel incidunt autem praesentium molestias.</p>
+                <p style="text-align: center;">This detection system is still under active development, but current evaluation results show promising performance. After improving the preprocessing stage, balancing the dataset, and refining the training process, the model achieved a test accuracy of 76.73% and an AUC score of 0.812. These results indicate that the model is reasonably capable of distinguishing between real and manipulated frames, although challenges remain—especially when detecting subtle forms of manipulation. Optimizing the decision threshold at 0.55 further improves the balance between precision and recall, making the model’s predictions more stable. While not yet perfect, the integration of Error Level Analysis (ELA) and XceptionNet forms a strong foundation that continues to be improved to achieve better reliability over time.</p>
             </div>
         </div>
     </div>
@@ -164,5 +166,19 @@ h3 {
 /* .presults {
     text-align: center;
 } */
+
+.imageResults {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.matrix {
+    padding: 1rem 0 1rem 0;
+    width: 60%;
+    border-radius: 20px;
+    /* justify-content: center; */
+}
 
 </style>
